@@ -1,37 +1,28 @@
-'use client';
-import Button from "../Button";
-import Input from "../components/Input";
-import {FieldValues, SubmitHandler, useForm} from "react-hook-form"
+import TodoForm from "../components/TodoForm";
+import TodoItem from "../components/TodoItem";
+import { prisma } from "../db";
+
+function fetchTodos(){
+  return prisma.todo.findMany();
+}
+
+export default async function HomePage() {
+  const todos = await fetchTodos();
+  // await prisma.todo.create({data:{title: "Premier", complete:false}})
 
 
-const HomePage = () => {
-
-  const{
-    register,
-    handleSubmit,
-    formState:{
-      errors
-    }
-  }= useForm<FieldValues>({
-    defaultValues:{
-      name:''
-    }
-  });
-
-  const onSubmit: SubmitHandler<FieldValues>= (data)=>{
-    console.log(data);
-  }
     return ( <>
       <div className="flex flex-col gap-4">
         <h2 className="text-3xl font-semibold">Creer un todo</h2>
-           <form onSubmit={handleSubmit(onSubmit)}>
-              <div className="flex flex-row gap-4">
-                  <Input id="name" label="name" errors={errors} register={register}/>
-                  <Button type="submit">Add</Button>
-              </div>
-           </form>
+           <TodoForm/>
+            <ul className=" flex flex-col gap-4">
+              {
+                todos.map((todo)=>{
+                  return <TodoItem key={todo.id} {...todo}/>
+                })
+              }
+            </ul>
+          
       </div>
     </> );
 }
- 
-export default HomePage;
