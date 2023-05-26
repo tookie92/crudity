@@ -11,8 +11,8 @@ export async function POST(
            complete
         }=body;
         
-        if (!title) {
-           return new NextResponse('Missing Info',{status: 400})
+        if (!title ) {
+           throw new NextResponse('Missing Info',{status: 400})
         }
        
         const todo = await prisma.todo.create({
@@ -25,7 +25,7 @@ export async function POST(
         return NextResponse.json(todo);
         
     } catch (error: any) {
-        console.log(error, 'Reg Error');
+        //console.log(error, 'Reg Error');
         return new NextResponse('Internal Error', {status:500})
     }
 

@@ -4,7 +4,8 @@ import { FieldErrors, FieldValues, UseFormRegister } from "react-hook-form"
 import clsx from "clsx";
 
 interface InputProps{
-    label: string,
+    label: string;
+    value?: string;
     id: string;
     type?: string;
     disabled?:boolean;
@@ -17,6 +18,7 @@ interface InputProps{
 const Input: React.FC<InputProps> = ({
     label,
     id,
+    value,
     type = "text",
     disabled,
     required,
@@ -27,8 +29,10 @@ const Input: React.FC<InputProps> = ({
      <div className="flex flex-row gap-3 items-center">
         <label htmlFor={id} className="block ">{label}</label>
         <input 
+        
         type={type} 
         id={id} 
+        value={value}
         required={required} 
         {...register(id,{required})}
         className={clsx(`
